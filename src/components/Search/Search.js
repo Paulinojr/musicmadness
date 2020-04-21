@@ -3,6 +3,8 @@ import '../../Search.css';
 import axios from 'axios';
 import secrets from '../../secrets.json';
 import Loader from '../../loader.gif'
+import Bracket from '../Bracket/Bracket';
+import Select from '../Select/Select';
 
 class Search extends React.Component{
     constructor( props ) {
@@ -12,7 +14,10 @@ class Search extends React.Component{
             query: '',
             results: {},
             loading: false,
-            message: ''
+            message: '',
+            artistId: '',
+            ready: false,
+            tournamentSize: 4,
         }
     }
 
@@ -35,7 +40,6 @@ class Search extends React.Component{
         axios.get(searchUrl, {
             cancelToken: this.cancel.token
         }).then((res) => {
-            console.log(res)
             const resultNotFoundMsg = !res.data.data.length ? 'There are no more search results. Please try a new search.' : '';
             this.setState({
 				results: res.data.data,
@@ -61,17 +65,28 @@ class Search extends React.Component{
                 <div className="results-container">
                     {results.map((result) => {
                         return(
-                            <a key={result.id} className="result-items">
-                                <h6 className="image-username">{result.name}</h6>
-                                <div className="image-wrapper">
-                                    <img className="image" src={result.picture} alt={result.name}/>
-                                </div>
+                            <a href="/" key={result.id} onClick={this.handleItemSelect.bind(this, result)} className="result-items">
+                                    <h6 className="image-username">{result.name}</h6>
+                                    <div className="image-wrapper">
+                                        <img className="image" src={result.picture} alt={result.name}/>
+                                    </div>
                             </a>
                         );
                     })}
                 </div>
             );
         }
+    }
+
+    handleItemSelect = (result, e) => {
+        const artistId = result.id
+        e.preventDefault();
+        this.setState({
+            artistId,
+            results: {},
+            query: result.name,
+            ready: true
+        });
     }
 
     handleOnInputChange = (event) => {
@@ -86,10 +101,15 @@ class Search extends React.Component{
         
     };
 
+    handleShowBrackets = () => {
+        this.setState({bracketReady: true});
+    }
+
     render(){
-        const { query, loading, message } = this.state;
+        const { query, loading, message, ready, bracketReady } = this.state;
         return(
             <div className="container">
+                <Select></Select>
                 <label className="search-label" htmlFor="search-input">
                 
                     <input
@@ -104,7 +124,12 @@ class Search extends React.Component{
                 </label>
                 { message && <p className="message">{message}</p> }
                 <img  src={Loader} className={`search-loading ${loading ? 'show' : 'hide' }`}  alt="loader"/>
+                
                 { this.renderSearchResults() }
+
+                { ready && <button className="go-button" onClick={this.handleShowBrackets}>Go!</button>}
+
+                { bracketReady && <Bracket artistId={this.state.artistId}></Bracket> }
             </div>
         )
     }
