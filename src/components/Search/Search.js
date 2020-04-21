@@ -19,6 +19,8 @@ class Search extends React.Component{
             ready: false,
             tournamentSize: 4,
         }
+
+        this.handleSelectChange = this.handleSelectChange.bind(this);
     }
 
     /**
@@ -102,14 +104,22 @@ class Search extends React.Component{
     };
 
     handleShowBrackets = () => {
-        this.setState({bracketReady: true});
+        if(this.state.bracketReady === true){
+            this.setState({bracketReady: false});
+
+        }else{
+            this.setState({bracketReady: true});
+        }
     }
 
+    handleSelectChange = (value) =>{
+        this.setState({tournamentSize: value});
+    }
     render(){
         const { query, loading, message, ready, bracketReady } = this.state;
         return(
             <div className="container">
-                <Select></Select>
+                <Select onChange={this.handleSelectChange}></Select>
                 <label className="search-label" htmlFor="search-input">
                 
                     <input
@@ -129,7 +139,7 @@ class Search extends React.Component{
 
                 { ready && <button className="go-button" onClick={this.handleShowBrackets}>Go!</button>}
 
-                { bracketReady && <Bracket artistId={this.state.artistId}></Bracket> }
+                { bracketReady && <Bracket tournamentSize={this.state.tournamentSize} artistId={this.state.artistId}></Bracket> }
             </div>
         )
     }
