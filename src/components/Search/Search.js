@@ -2,6 +2,7 @@ import React from 'react';
 import '../../Search.css';
 import axios from 'axios';
 import secrets from '../../secrets.json';
+import Loader from '../../loader.gif'
 
 class Search extends React.Component{
     constructor( props ) {
@@ -22,9 +23,8 @@ class Search extends React.Component{
      * @param {String} query Search Query.
      *
      */
-    fetchSearchResult = (updatedPageNo = '', query ) => {
-        const pageNumber = updatedPageNo ? `&page=${updatedPageNo}` : '';
-        const searchUrl = `https://api.deezer.com/search/artist/?q=${query}&index=0&limit=${pageNumber}&output=json`;
+    fetchSearchResults = ( query ) => {
+        const searchUrl = `https://api.deezer.com/search/artist/?q=${query}&index=0&limit=5&output=json`;
 
         if (this.cancel) {
             // Cancel the previous request before making a new request
@@ -53,25 +53,48 @@ class Search extends React.Component{
         });
     };
 
+    renderSearchResults(){
+        const {results} = this.state;
+
+        if (Object.keys(results).length && results.length) {
+            return (
+                <div className="results-container">
+                    {results.map((result) => {
+                        return(
+                            <a key={result.id} className="result-items">
+                                <h6 className="image-username">{result.name}</h6>
+                                <div className="image-wrapper">
+                                    <img className="image" src={result.picture} alt={result.name}/>
+                                </div>
+                            </a>
+                        );
+                    })}
+                </div>
+            );
+        }
+    }
+
     handleOnInputChange = (event) => {
         const query = event.target.value;
         if(!query){
             this.setState({ query, loading: true, message: ''  } );
         }else{
             this.setState({ query, loading: true, message: '' }, () => {
-                this.fetchSearchResult(5, query);
+                this.fetchSearchResults(query);
             });
         }
         
     };
 
     render(){
+        const { query, loading, message } = this.state;
         return(
             <div className="container">
                 <label className="search-label" htmlFor="search-input">
+                
                     <input
                             type="text"
-                            
+                            value={query}
                             id="search-input"
                             placeholder="Search for an artist..."
                             onChange={this.handleOnInputChange}
@@ -79,6 +102,9 @@ class Search extends React.Component{
                     <i className="fa fa-search search-icon"/>
                     
                 </label>
+                { message && <p className="message">{message}</p> }
+                <img  src={Loader} className={`search-loading ${loading ? 'show' : 'hide' }`}  alt="loader"/>
+                { this.renderSearchResults() }
             </div>
         )
     }

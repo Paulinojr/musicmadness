@@ -1,6 +1,10 @@
+body{
+	background-color: #353ca7;
+	color: #fff;
+}
 .heading {
 	font-size: 30px;
-	padding: 16px 0;
+	padding: 10px 0;
 	color: #444;
 	text-align: center;
 }
@@ -12,10 +16,12 @@
 }
 .search-label {
 	position: relative;
+	display: flex;
+	align-items: center;
 }
 .container input {
 	width: 100%;
-	padding: 16px;
+	padding: 10px;
 	font-size: 20px;
 	font-style: italic;
 	color: #444;
@@ -23,9 +29,60 @@
 	outline: none;
 }
 .search-icon {
-	position: absolute;
-	top: -10px;
+	position: absolute;	
 	font-size: 16px;
 	color: #555;
 	right: 18px;
+}
+
+/* Results */
+.results-container {
+	display: flex;
+	justify-content: center;
+	flex-flow: wrap;
+}
+.result-items {
+	position: relative;
+	padding: 16px;
+	border: 1px solid #96b8d6;
+	margin: 16px;
+	text-align: center;
+	min-width: 150px;
+	text-decoration: none;
+	box-shadow: 2px 2px 2px #96b8d6;
+}
+.image-username {
+	color: #733fa1;
+	font-size: 18px;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	margin: 0;
+	background: rgba(0, 0, 0, 0.8);
+	padding: 5px 10px;
+}
+.image {
+	width: 100%;
+	height: 150px;
+}
+.image-wrapper {
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+	height: 100%;
+	justify-content: center;
+}
+/*Loader*/
+.search-loading {
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+/*Show and hide*/
+.show {
+	display: inline-block;
+}
+.hide {
+	display: none;
 }
