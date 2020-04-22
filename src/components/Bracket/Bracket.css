@@ -1,0 +1,11 @@
+.bracket{
+    display: flex;
+    justify-content: space-evenly;
+}
+.slot{
+    display: flex;
+    width: 350px;
+    height: 150px;
+    background-color: #111671;
+    margin: 5px;
+}

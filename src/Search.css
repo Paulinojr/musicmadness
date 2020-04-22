@@ -12,7 +12,7 @@ body{
 .container {
 	margin: 36px auto;
 	width: 100%;
-	max-width: 800px;
+	text-align: center;
 }
 .size-label{
 	margin-bottom: 15px;
@@ -21,9 +21,12 @@ body{
 	position: relative;
 	display: flex;
 	align-items: center;
+	justify-content: center;
 }
+
+
 .container input {
-	width: 100%;
+	width: 800px;
 	padding: 10px;
 	font-size: 20px;
 	font-style: italic;

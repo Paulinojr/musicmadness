@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Track from '../Track/Track';
-
+import './Bracket.css';
 
 class Bracket extends React.Component{
     constructor( props ){
@@ -10,7 +10,11 @@ class Bracket extends React.Component{
         this.state = {
             tracks: [],
             message: '',
-            sortedTracks: []
+            sortedTracks: [],
+            game4: {
+                level: 0,
+                active: true
+            }
         };
     }
 
@@ -63,16 +67,42 @@ class Bracket extends React.Component{
 
         this.setState({sortedTracks});
 
-        console.log(sortedTracks);
     }
+
+    listBracket(){
+        let half_length = Math.floor(this.state.sortedTracks.length / 2);    
+        let leftSide = this.state.sortedTracks.slice(0,half_length);
+        let rightSide = this.state.sortedTracks.slice(half_length, this.state.sortedTracks.length);
+
+        if(this.state.game4.active === true){
+            return(
+                <div className="bracket">
+                    <div className="q1">            
+                        {leftSide.map(function(item, i){
+                            return <Track key={i} albumCover={item.album.cover} title={item.title} albumTitle={item.album.title} preview={item.preview}></Track>
+                        })}
+                    </div>
+                    <div className="q3">
+                        <div className="slot"></div>
+                        <div className="slot"></div>
+                    </div>
+                    <div className="q2">
+                        {rightSide.map(function(item, i){
+                            return <Track key={i} albumCover={item.album.cover} title={item.title} albumTitle={item.album.title} preview={item.preview}></Track>
+                        })}
+                    </div>
+                </div>
+                
+            )
+            
+        }
+    }
+    
 
     render(){
         return(
             <div>
-                {this.state.sortedTracks.map(function(item, i){
-                    return <Track key={i} albumCover={item.album.cover} title={item.title} albumTitle={item.album.title} preview={item.preview}>Test</Track>
-                })
-                }
+                {this.listBracket()}
             </div>
         );
     }

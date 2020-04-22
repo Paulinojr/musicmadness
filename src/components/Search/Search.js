@@ -129,7 +129,6 @@ class Search extends React.Component{
                             placeholder="Search for an artist..."
                             onChange={this.handleOnInputChange}
                         />
-                    <i className="fa fa-search search-icon"/>
                     
                 </label>
                 { message && <p className="message">{message}</p> }
